@@ -1,14 +1,23 @@
-import { Telegraf } from 'telegraf';
+import { Telegraf, Context, Markup } from 'telegraf';
 import { config } from 'dotenv';
 config(); 
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN || '');
 
-bot.start((ctx) => ctx.reply('Hello! Welcome to your bot.'));
+bot.start((ctx) => ctx.reply('Привет!'));
 
 bot.on('text', (ctx) => {
   const message = ctx.message?.text || '';
-  ctx.reply(`You said: ${message}`);
+
+  const menuButtons = [
+    [{ text: 'Button 1' }, { text: 'Button 2' }],
+    [{ text: 'Button 3' }, { text: 'Button 4' }],
+  ];
+
+  const keyboardExtra = Markup.keyboard(menuButtons);
+
+  const messageText = `Вы написали - ${message}`;
+  ctx.reply(messageText, keyboardExtra);
 });
 
 bot.launch();
