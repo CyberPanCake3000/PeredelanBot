@@ -8,11 +8,11 @@ class TelegramBot {
   }
 
   public start() {
-    this.start((ctx) => ctx.reply('Welcome to the bot!'));
+    this.bot.start((ctx) => ctx.reply('Welcome to the bot!'));
   }
 
   public launch() {
-    this.launch();
+    this.bot.launch();
   }
 }
 
