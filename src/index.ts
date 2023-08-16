@@ -1,23 +1,29 @@
-import { Telegraf, Context, Markup } from 'telegraf';
-import { config } from 'dotenv';
-config(); 
+import dotenv from 'dotenv';
+import App from './App';
 
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN || '');
+dotenv.config();
 
-bot.start((ctx) => ctx.reply('Привет!'));
+const app = new App();
+app.setup();
+app.launch();
 
-bot.on('text', (ctx) => {
-  const message = ctx.message?.text || '';
+import { MongoClient } from "mongodb";
 
-  const menuButtons = [
-    [{ text: 'Button 1' }, { text: 'Button 2' }],
-    [{ text: 'Button 3' }, { text: 'Button 4' }],
-  ];
+// Replace the following with your Atlas connection string
+const url: string = process.env.DB_CONN_STRING || '';
 
-  const keyboardExtra = Markup.keyboard(menuButtons);
+// Connect to your Atlas cluster
+const client = new MongoClient(url);
 
-  const messageText = `Вы написали - ${message}`;
-  ctx.reply(messageText, keyboardExtra);
-});
+async function run() {
+    try {
+        await client.connect();
+        console.log("Successfully connected to Atlas");
+    } catch (err) {
+        console.log((err as Error).stack);
+    } finally {
+        await client.close();
+    }
+}
 
-bot.launch();
+run().catch(console.dir);
