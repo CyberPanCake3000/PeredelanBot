@@ -1,13 +1,12 @@
 import TelegramBot from './bot/TelegramBot';
-import connectToDatabase from './services/DatabaseManager';
+import DBManager from './services/DatabaseManager';
 
 class App {
   private bot: TelegramBot;
 
   constructor() {
-    const db = connectToDatabase();
-
-    console.log(db);
+    const DB_CONN_STRING = process.env.DB_CONN_STRING || '';
+    const db: DBManager = new DBManager(DB_CONN_STRING);
 
     const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
@@ -26,6 +25,7 @@ class App {
   public launch() {
     this.bot.launch();
   }
+
 }
 
 export default App;
