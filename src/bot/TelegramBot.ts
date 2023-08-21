@@ -1,8 +1,8 @@
-import { Telegraf, Context, Markup, Scenes, session } from 'telegraf';
+import { Scenes, session, Telegraf } from 'telegraf';
 import { startWizard } from './actions/start';
 
 class TelegramBot {
-  private bot: Telegraf<Context>;
+  private bot: Telegraf<Scenes.WizardContext>;
   private readonly token: string;
 
   constructor(token: string) {
@@ -17,7 +17,7 @@ class TelegramBot {
 
     this.bot.use(stage.middleware());
 
-    this.bot.start(Scenes.enter('startWizard'));
+    this.bot.start(Scenes.Stage.enter<Scenes.WizardContext>('startWizard'));
   }
 
   public configureCommandHandlers(){
